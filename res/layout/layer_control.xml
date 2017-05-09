@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+    <Button
+        android:id="@+id/jingdian"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="景点" />
+    <Button
+        android:id="@+id/meishi"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="美食" />
+    <Button
+        android:id="@+id/jiudian"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="酒店" />
+    <Button
+        android:id="@+id/gouwu"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="购物" />
+    <Button
+        android:id="@+id/yule"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="娱乐" />
+
+</LinearLayout>
