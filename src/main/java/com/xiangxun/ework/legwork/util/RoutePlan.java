@@ -23,11 +23,11 @@ import com.baidu.mapapi.search.route.TransitRouteLine.TransitStep;
 import com.xiangxun.ework.legwork.DrawerActivity;
 
 public class RoutePlan implements OnGetRoutePlanResultListener {
-	
+
     RouteLine route = null;
     OverlayManager routeOverlay = null;
     boolean useDefaultIcon = false;
-    RoutePlanSearch mSearch = null;    // ËÑË÷Ä£¿é£¬Ò²¿ÉÈ¥µôµØÍ¼Ä£¿é¶ÀÁ¢Ê¹ÓÃ
+    RoutePlanSearch mSearch = null;    // æœç´¢æ¨¡å—ï¼Œä¹Ÿå¯å»æ‰åœ°å›¾æ¨¡å—ç‹¬ç«‹ä½¿ç”¨
     private int[] address ;
 
 //    public RoutePlan() {
@@ -36,26 +36,26 @@ public class RoutePlan implements OnGetRoutePlanResultListener {
 //    }
 
     /**
-     * ·¢ÆğÂ·Ïß¹æ»®ËÑË÷Ê¾Àı
+     * å‘èµ·è·¯çº¿è§„åˆ’æœç´¢ç¤ºä¾‹
      *
      * @param v
      */
     public int[] SearchButtonProcess(String start, String end) {
-        //ÖØÖÃä¯ÀÀ½ÚµãµÄÂ·ÏßÊı¾İ
-    	address = new int[2];
+        //é‡ç½®æµè§ˆèŠ‚ç‚¹çš„è·¯çº¿æ•°æ®
+        address = new int[2];
         mSearch = RoutePlanSearch.newInstance();
         route = null;
-        PlanNode stNode = PlanNode.withCityNameAndPlaceName("ÏÃÃÅ", start);
-        PlanNode enNode = PlanNode.withCityNameAndPlaceName("ÏÃÃÅ", end);
+        PlanNode stNode = PlanNode.withCityNameAndPlaceName("å¦é—¨", start);
+        PlanNode enNode = PlanNode.withCityNameAndPlaceName("å¦é—¨", end);
         mSearch = RoutePlanSearch.newInstance();
         mSearch.setOnGetRoutePlanResultListener(this);
 
-        // Êµ¼ÊÊ¹ÓÃÖĞÇë¶ÔÆğµãÖÕµã³ÇÊĞ½øĞĞÕıÈ·µÄÉè¶¨
+        // å®é™…ä½¿ç”¨ä¸­è¯·å¯¹èµ·ç‚¹ç»ˆç‚¹åŸå¸‚è¿›è¡Œæ­£ç¡®çš„è®¾å®š
         mSearch.transitSearch((new TransitRoutePlanOption())
                 .from(stNode)
-                .city("ÏÃÃÅ")
+                .city("å¦é—¨")
                 .to(enNode));
-        
+
 //        /**test code for time and distance begin***/
 //        int allTime = 0;
 //        int distance = 0;
@@ -64,7 +64,7 @@ public class RoutePlan implements OnGetRoutePlanResultListener {
 //        if (route != null) {
 //        	for (int j = 0; j < route.getAllStep().size(); j++) {
 //            	TransitRouteLine.TransitStep allStep = (TransitStep) route.getAllStep().get(j);
-//    			allTime = allStep.getDuration();			
+//    			allTime = allStep.getDuration();
 //    			allTimeSum += allTime;
 //    			distance = allStep.getDistance();
 //    			distanceSum += distance;
@@ -77,33 +77,33 @@ public class RoutePlan implements OnGetRoutePlanResultListener {
         return address;
     }
 
-	@Override
-	public void onGetDrivingRouteResult(DrivingRouteResult arg0) {
-		// TODO Auto-generated method stub
-		
-	}
-	
-	@Override
-	public void onGetTransitRouteResult(TransitRouteResult result) {
-		// TODO Auto-generated method stub
-		if (result == null || result.error != SearchResult.ERRORNO.NO_ERROR) {
-    		return;
-    	}
+    @Override
+    public void onGetDrivingRouteResult(DrivingRouteResult arg0) {
+        // TODO Auto-generated method stub
+
+    }
+
+    @Override
+    public void onGetTransitRouteResult(TransitRouteResult result) {
+        // TODO Auto-generated method stub
+        if (result == null || result.error != SearchResult.ERRORNO.NO_ERROR) {
+            return;
+        }
         if (result.error == SearchResult.ERRORNO.AMBIGUOUS_ROURE_ADDR) {
             return;
         }
         if (result.error == SearchResult.ERRORNO.NO_ERROR) {
             route = result.getRouteLines().get(0);
         }else {
-			return;
-		}
-	}
-	
-	@Override
-	public void onGetWalkingRouteResult(WalkingRouteResult arg0) {
-		// TODO Auto-generated method stub
-		
-	}
+            return;
+        }
+    }
+
+    @Override
+    public void onGetWalkingRouteResult(WalkingRouteResult arg0) {
+        // TODO Auto-generated method stub
+
+    }
 
 
 }

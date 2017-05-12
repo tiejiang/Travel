@@ -44,7 +44,7 @@ public class LoginActivity extends Activity implements OnClickListener {
 	private boolean isConnect;
 	private static String LOG_URL = "/x001/userInfs/loginUser";
 	private static String REG_URL = "/x001/userInfs/registeredUser";
-	
+
 	@SuppressLint("NewApi")
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -52,29 +52,29 @@ public class LoginActivity extends Activity implements OnClickListener {
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.login);
-		if (android.os.Build.VERSION.SDK_INT > 9) { 
-			 StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build(); 
-			 StrictMode.setThreadPolicy(policy); 
-			 } 
-		
-		//¼ì²éÍøÂç×´Ì¬
-		ConnectivityManager con=(ConnectivityManager)getSystemService(Activity.CONNECTIVITY_SERVICE);  
-		boolean wifi=con.getNetworkInfo(ConnectivityManager.TYPE_WIFI).isConnectedOrConnecting();  
-		boolean internet=con.getNetworkInfo(ConnectivityManager.TYPE_MOBILE).isConnectedOrConnecting();  
-		if(wifi|internet){  
-		    //Ö´ĞĞÏà¹Ø²Ù×÷  
-			isConnect = true;
-		}else{  
-		    Toast.makeText(getApplicationContext(),  "Çë¼ì²éÍøÂçÁ¬½Ó", Toast.LENGTH_LONG).show();  
-		    isConnect = false;
+		if (android.os.Build.VERSION.SDK_INT > 9) {
+			StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+			StrictMode.setThreadPolicy(policy);
 		}
-		
+
+		//æ£€æŸ¥ç½‘ç»œçŠ¶æ€
+		ConnectivityManager con=(ConnectivityManager)getSystemService(Activity.CONNECTIVITY_SERVICE);
+		boolean wifi=con.getNetworkInfo(ConnectivityManager.TYPE_WIFI).isConnectedOrConnecting();
+		boolean internet=con.getNetworkInfo(ConnectivityManager.TYPE_MOBILE).isConnectedOrConnecting();
+		if(wifi|internet){
+			//æ‰§è¡Œç›¸å…³æ“ä½œ
+			isConnect = true;
+		}else{
+			Toast.makeText(getApplicationContext(),  "è¯·æ£€æŸ¥ç½‘ç»œè¿æ¥", Toast.LENGTH_LONG).show();
+			isConnect = false;
+		}
+
 		userEditText = (EditText)findViewById(R.id.userEditText);
 		pwdEditText = (EditText)findViewById(R.id.pwdEditText);
 		cancelButton = (Button)findViewById(R.id.cancelButton);
 		loginButton = (Button)findViewById(R.id.loginButton);
 		registerButton = (Button)findViewById(R.id.registerButton);
-		
+
 		cancelButton.setOnClickListener(this);
 		loginButton.setOnClickListener(this);
 		registerButton.setOnClickListener(this);
@@ -83,125 +83,125 @@ public class LoginActivity extends Activity implements OnClickListener {
 	public void onClick(View arg0) {
 		// TODO Auto-generated method stub
 		switch (arg0.getId()) {
-		case R.id.loginButton:
-			if (isConnect) {
-				if (validate()) {
-					if (login()) {
-						Toast.makeText(LoginActivity.this, "µÇÂ¼Ê§°Ü£¡", SHOW_HINT_TIME).show();
-					}else {
-						saveUserMsg(username, pwd);
-						//µÇÂ½Ìõ¼ş·ûºÏ ½øÈëÖ÷½çÃæ
-						Intent intent = new Intent();
-						intent.setClass(LoginActivity.this, DrawerActivity.class);
-						startActivity(intent);
+			case R.id.loginButton:
+				if (isConnect) {
+					if (validate()) {
+						if (login()) {
+							Toast.makeText(LoginActivity.this, "ç™»å½•å¤±è´¥ï¼", SHOW_HINT_TIME).show();
+						}else {
+							saveUserMsg(username, pwd);
+							//ç™»é™†æ¡ä»¶ç¬¦åˆ è¿›å…¥ä¸»ç•Œé¢
+							Intent intent = new Intent();
+							intent.setClass(LoginActivity.this, DrawerActivity.class);
+							startActivity(intent);
+						}
 					}
+				}else {
+					AlertDialog.Builder builder = new AlertDialog.Builder(this);
+					builder.setTitle("æé†’")
+							.setMessage("è¯·æ£€æŸ¥æ˜¯å¦è¿æ¥ç½‘ç»œ")
+							.setPositiveButton("ç¡®å®š", null);
+					builder.setCancelable(false);
+					builder.create()
+							.show();
 				}
-			}else {
-				AlertDialog.Builder builder = new AlertDialog.Builder(this);
-				builder.setTitle("ÌáĞÑ")
-				.setMessage("Çë¼ì²éÊÇ·ñÁ¬½ÓÍøÂç")
-				.setPositiveButton("È·¶¨", null);
-				builder.setCancelable(false);
-				builder.create()
-				.show();
-			}
-			
-			break;
 
-		case R.id.cancelButton:
-			Intent intent = new Intent();
-			intent.setClass(LoginActivity.this, DrawerActivity.class);
-			finish();
-			System.exit(0);
-			break;
-		case R.id.registerButton:
-			//×¢²áµÄÒµÎñÂß¼­
-			LayoutInflater layoutInflater = LayoutInflater.from(LoginActivity.this);
-			final View registerView = layoutInflater.inflate(R.layout.register, null);
-			showRegister(registerView);
-			break;
+				break;
+
+			case R.id.cancelButton:
+				Intent intent = new Intent();
+				intent.setClass(LoginActivity.this, DrawerActivity.class);
+				finish();
+				System.exit(0);
+				break;
+			case R.id.registerButton:
+				//æ³¨å†Œçš„ä¸šåŠ¡é€»è¾‘
+				LayoutInflater layoutInflater = LayoutInflater.from(LoginActivity.this);
+				final View registerView = layoutInflater.inflate(R.layout.register, null);
+				showRegister(registerView);
+				break;
 		}
 	}
-	//×¢²áµÄdialog ºÍ view
+	//æ³¨å†Œçš„dialog å’Œ view
 	private void showRegister(final View view){
 		AlertDialog builder = new AlertDialog.Builder(LoginActivity.this)
-		.setView(view)
-		.setPositiveButton("È·¶¨", new DialogInterface.OnClickListener() {
-			
-			@Override
-			public void onClick(DialogInterface dialog, int which) {
-				// TODO Auto-generated method stub
-				EditText username = (EditText)view.findViewById(R.id.username);
-				EditText password = (EditText)view.findViewById(R.id.password);
-				EditText school = (EditText)view.findViewById(R.id.school);
-				
-				String usernameStr = username.getText().toString().trim();
-				String passwordStr = password.getText().toString().trim();
-				String schoolStr = school.getText().toString().trim();
-				//ÉÏ´«×¢²áĞÅÏ¢
-				postRegisterMsg(usernameStr, passwordStr, schoolStr);
-			}
-		})
-		.setNegativeButton("È¡Ïû", null)
-		.create();
+				.setView(view)
+				.setPositiveButton("ç¡®å®š", new DialogInterface.OnClickListener() {
+
+					@Override
+					public void onClick(DialogInterface dialog, int which) {
+						// TODO Auto-generated method stub
+						EditText username = (EditText)view.findViewById(R.id.username);
+						EditText password = (EditText)view.findViewById(R.id.password);
+						EditText school = (EditText)view.findViewById(R.id.school);
+
+						String usernameStr = username.getText().toString().trim();
+						String passwordStr = password.getText().toString().trim();
+						String schoolStr = school.getText().toString().trim();
+						//ä¸Šä¼ æ³¨å†Œä¿¡æ¯
+						postRegisterMsg(usernameStr, passwordStr, schoolStr);
+					}
+				})
+				.setNegativeButton("å–æ¶ˆ", null)
+				.create();
 		builder.show();
 	}
-	// ÑéÖ¤·½·¨  ÊäÈëÊÇ·ñÎª¿Õ
+	// éªŒè¯æ–¹æ³•  è¾“å…¥æ˜¯å¦ä¸ºç©º
 	private boolean validate(){
 		username = userEditText.getText().toString().trim();
 		if(username.equals("")){
-			Toast.makeText(LoginActivity.this, "ÓÃ»§Ãû³ÆÊÇ±ØÌîÏî£¡", SHOW_HINT_TIME).show();
+			Toast.makeText(LoginActivity.this, "ç”¨æˆ·åç§°æ˜¯å¿…å¡«é¡¹ï¼", SHOW_HINT_TIME).show();
 			return false;
 		}
 		pwd = pwdEditText.getText().toString().trim();
 		if(pwd.equals("")){
-			Toast.makeText(LoginActivity.this, "ÓÃ»§ÃÜÂëÊÇ±ØÌîÏî!", SHOW_HINT_TIME).show();
+			Toast.makeText(LoginActivity.this, "ç”¨æˆ·å¯†ç æ˜¯å¿…å¡«é¡¹!", SHOW_HINT_TIME).show();
 			return false;
 		}
 		return true;
 	}
-	// µÇÂ¼
+	// ç™»å½•
 	private boolean login(){
 		jsonStr = queryForHttpPost(username, pwd);
-		Log.e("jsonÊı¾İ:", jsonStr);
+		Log.e("jsonæ•°æ®:", jsonStr);
 		return parseJsonArray(jsonStr);
 	}
-	// ÇëÇó·şÎñ¶Ë »ñµÃÏìÓ¦
+	// è¯·æ±‚æœåŠ¡ç«¯ è·å¾—å“åº”
 	private String queryForHttpPost(String account, String password){
 		List<NameValuePair> params = new ArrayList<NameValuePair>();
-		// Ìí¼ÓÇëÇó²ÎÊı
+		// æ·»åŠ è¯·æ±‚å‚æ•°
 		params.add(new BasicNameValuePair("username", account));
 		params.add(new BasicNameValuePair("pwd", password));
 		UrlEncodedFormEntity entity1=null;
 		try {
-			 entity1 =  new UrlEncodedFormEntity(params,HTTP.UTF_8);
+			entity1 =  new UrlEncodedFormEntity(params,HTTP.UTF_8);
 		} catch (UnsupportedEncodingException e) {
 			e.printStackTrace();
 		}
-		// »ñµÃÇëÇó¶ÔÏóHttpPost
+		// è·å¾—è¯·æ±‚å¯¹è±¡HttpPost
 		HttpPost request = HttpUtil.getHttpPost(Url.PrimitiveUrl + LOG_URL);
-		// ÉèÖÃ²éÑ¯²ÎÊı
+		// è®¾ç½®æŸ¥è¯¢å‚æ•°
 		request.setEntity(entity1);
-		// »ñµÃÏìÓ¦½á¹û
+		// è·å¾—å“åº”ç»“æœ
 		String result = HttpUtil.queryStringForPost(request);
-		
+
 		Log.v("HANDLE_TRAVEL_TEST", "result:" + result);
 		return result;
 	}
-	// ±£´æÓÃ»§ÃûÃÜÂë
+	// ä¿å­˜ç”¨æˆ·åå¯†ç 
 	private void saveUserMsg(String username, String pwd){
 		String id = username;
 		String name = pwd;
-		// ¹²ÏíĞÅÏ¢
+		// å…±äº«ä¿¡æ¯
 		SharedPreferences pre = getSharedPreferences("user_msg", MODE_WORLD_WRITEABLE);
 		SharedPreferences.Editor editor = pre.edit();
 		editor.putString("id", id);
 		editor.putString("name", name);
 		editor.commit();
 	}
-	// ½âÎöjsonÊı¾İ (½âÎöÊı×é)
+	// è§£æjsonæ•°æ® (è§£ææ•°ç»„)
 	private boolean parseJsonArray(String json){
-		boolean isnull = false;//±êÊ¶jsonArrayÊÇ·ñÎª¿Õ
+		boolean isnull = false;//æ ‡è¯†jsonArrayæ˜¯å¦ä¸ºç©º
 		String username = "";
 		String userpwd = "";
 		try {
@@ -223,12 +223,12 @@ public class LoginActivity extends Activity implements OnClickListener {
 		}
 		return isnull;
 	}
-	//ÉÏ´«×é×¢²áĞÅÏ¢
+	//ä¸Šä¼ ç»„æ³¨å†Œä¿¡æ¯
 	public static void postRegisterMsg(String usernameStr, String passwordStr, String schoolStr){
 		List<NameValuePair> params = new ArrayList<NameValuePair>();
-		// Ìí¼ÓÇëÇó²ÎÊı
+		// æ·»åŠ è¯·æ±‚å‚æ•°
 		params.add(new BasicNameValuePair("username", usernameStr));
-		params.add(new BasicNameValuePair("pwd", passwordStr));//×î¶à´Ó·şÎñ¶Ë·µ»ØÊ®ÌõÆÀÂÛ
+		params.add(new BasicNameValuePair("pwd", passwordStr));//æœ€å¤šä»æœåŠ¡ç«¯è¿”å›åæ¡è¯„è®º
 		params.add(new BasicNameValuePair("schoolname", schoolStr));
 		UrlEncodedFormEntity entity1=null;
 		try {
@@ -236,13 +236,13 @@ public class LoginActivity extends Activity implements OnClickListener {
 		} catch (UnsupportedEncodingException e) {
 			e.printStackTrace();
 		}
-		// »ñµÃÇëÇó¶ÔÏóHttpPost
+		// è·å¾—è¯·æ±‚å¯¹è±¡HttpPost
 		HttpPost request = HttpUtil.getHttpPost(Url.PrimitiveUrl + REG_URL);
-		// ÉèÖÃ²éÑ¯²ÎÊı
+		// è®¾ç½®æŸ¥è¯¢å‚æ•°
 		request.setEntity(entity1);
-		// »ñµÃÏìÓ¦½á¹û
+		// è·å¾—å“åº”ç»“æœ
 		String result = HttpUtil.queryStringForPost(request);
-		
-		Log.v("HANDLE_TRAVEL_TEST", "result:" + result);
+
+		Log.v("TIEJIANG", "result:" + result);
 	}
 }

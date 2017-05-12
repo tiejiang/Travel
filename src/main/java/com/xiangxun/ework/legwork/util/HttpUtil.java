@@ -1,7 +1,5 @@
 package com.xiangxun.ework.legwork.util;
 
-import java.io.IOException;
-
 import org.apache.http.HttpResponse;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.methods.HttpGet;
@@ -9,102 +7,103 @@ import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.util.EntityUtils;
 
+import java.io.IOException;
+
 public class HttpUtil {
 	//test URL
 //	public static final String BASE_URL="http://10.8.12.217:8080/demo/";
-	// »ñµÃGetÇëÇó¶ÔÏórequest
+	// è·å¾—Getè¯·æ±‚å¯¹è±¡request
 	public static HttpGet getHttpGet(String url){
 		HttpGet request = new HttpGet(url);
-		 return request;
+		return request;
 	}
-	// »ñµÃPostÇëÇó¶ÔÏórequest
+	// è·å¾—Postè¯·æ±‚å¯¹è±¡request
 	public static HttpPost getHttpPost(String url){
-		 HttpPost request = new HttpPost(url);
-		 return request;
+		HttpPost request = new HttpPost(url);
+		return request;
 	}
-	// ¸ù¾İÇëÇó»ñµÃÏìÓ¦¶ÔÏóresponse
+	// æ ¹æ®è¯·æ±‚è·å¾—å“åº”å¯¹è±¡response
 	public static HttpResponse getHttpResponse(HttpGet request) throws ClientProtocolException, IOException{
 		HttpResponse response = new DefaultHttpClient().execute(request);
 		return response;
 	}
-	// ¸ù¾İÇëÇó»ñµÃÏìÓ¦¶ÔÏóresponse 
+	// æ ¹æ®è¯·æ±‚è·å¾—å“åº”å¯¹è±¡response
 	public static HttpResponse getHttpResponse(HttpPost request) throws ClientProtocolException, IOException{
 		HttpResponse response = new DefaultHttpClient().execute(request);
 		return response;
 	}
-	
-	// ·¢ËÍPostÇëÇó£¬»ñµÃÏìÓ¦²éÑ¯½á¹û
+
+	// å‘é€Postè¯·æ±‚ï¼Œè·å¾—å“åº”æŸ¥è¯¢ç»“æœ
 	public static String queryStringForPost(String url){
-		// ¸ù¾İurl»ñµÃHttpPost¶ÔÏó
+		// æ ¹æ®urlè·å¾—HttpPostå¯¹è±¡
 		HttpPost request = HttpUtil.getHttpPost(url);
 		String result = null;
 		try {
-			// »ñµÃÏìÓ¦¶ÔÏó
+			// è·å¾—å“åº”å¯¹è±¡
 			HttpResponse response = HttpUtil.getHttpResponse(request);
-			// ÅĞ¶ÏÊÇ·ñÇëÇó³É¹¦
+			// åˆ¤æ–­æ˜¯å¦è¯·æ±‚æˆåŠŸ
 			if(response.getStatusLine().getStatusCode()==200){
-				// »ñµÃÏìÓ¦
+				// è·å¾—å“åº”
 				result = EntityUtils.toString(response.getEntity());
 				return result;
 			}
 		} catch (ClientProtocolException e) {
 			e.printStackTrace();
-			result = "ÍøÂçÒì³££¡";
+			result = "ç½‘ç»œå¼‚å¸¸ï¼";
 			return result;
 		} catch (IOException e) {
 			e.printStackTrace();
-			result = "ÍøÂçÒì³££¡";
+			result = "ç½‘ç»œå¼‚å¸¸ï¼";
 			return result;
 		}
-        return null;
-    }
-	// »ñµÃÏìÓ¦²éÑ¯½á¹û  
+		return null;
+	}
+	// è·å¾—å“åº”æŸ¥è¯¢ç»“æœ
 	public static String queryStringForPost(HttpPost request){
 		String result = null;
 		try {
-			// »ñµÃÏìÓ¦¶ÔÏó
+			// è·å¾—å“åº”å¯¹è±¡
 			HttpResponse response = HttpUtil.getHttpResponse(request);
-			// ÅĞ¶ÏÊÇ·ñÇëÇó³É¹¦
+			// åˆ¤æ–­æ˜¯å¦è¯·æ±‚æˆåŠŸ
 			if(response.getStatusLine().getStatusCode()==200){
-				// »ñµÃÏìÓ¦
+				// è·å¾—å“åº”
 				result = EntityUtils.toString(response.getEntity());
 				return result;
 			}
 		} catch (ClientProtocolException e) {
 			e.printStackTrace();
-			result = "ÍøÂçÒì³££¡";
+			result = "ç½‘ç»œå¼‚å¸¸ï¼";
 			return result;
 		} catch (IOException e) {
 			e.printStackTrace();
-			result = "ÍøÂçÒì³££¡";
+			result = "ç½‘ç»œå¼‚å¸¸ï¼";
 			return result;
 		}
-        return null;
-    }
-	// ·¢ËÍGetÇëÇó£¬»ñµÃÏìÓ¦²éÑ¯½á¹û
+		return null;
+	}
+	// å‘é€Getè¯·æ±‚ï¼Œè·å¾—å“åº”æŸ¥è¯¢ç»“æœ
 	public static  String queryStringForGet(String url){
-		// »ñµÃHttpGet¶ÔÏó
+		// è·å¾—HttpGetå¯¹è±¡
 		HttpGet request = HttpUtil.getHttpGet(url);
 		String result = null;
 		try {
-			// »ñµÃÏìÓ¦¶ÔÏó
+			// è·å¾—å“åº”å¯¹è±¡
 			HttpResponse response = HttpUtil.getHttpResponse(request);
-			// ÅĞ¶ÏÊÇ·ñÇëÇó³É¹¦
+			// åˆ¤æ–­æ˜¯å¦è¯·æ±‚æˆåŠŸ
 			if(response.getStatusLine().getStatusCode()==200){
-				// »ñµÃÏìÓ¦
+				// è·å¾—å“åº”
 				result = EntityUtils.toString(response.getEntity());
 				return result;
 			}
 		} catch (ClientProtocolException e) {
 			e.printStackTrace();
-			result = "ÍøÂçÒì³££¡";
+			result = "ç½‘ç»œå¼‚å¸¸ï¼";
 			return result;
 		} catch (IOException e) {
 			e.printStackTrace();
-			result = "ÍøÂçÒì³££¡";
+			result = "ç½‘ç»œå¼‚å¸¸ï¼";
 			return result;
 		}
-        return null;
-    }
+		return null;
+	}
 }
-

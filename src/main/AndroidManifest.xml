@@ -93,9 +93,6 @@
             android:name=".TravelRoutePlanning"
             />
          <activity
-            android:name=".SignActivity"
-            />
-         <activity
             android:name=".Nearby"
             />
          <activity

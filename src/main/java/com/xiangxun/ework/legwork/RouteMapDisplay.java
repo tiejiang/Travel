@@ -1,10 +1,14 @@
-
 package com.xiangxun.ework.legwork;
+
+import android.os.Bundle;
+import android.support.v4.app.FragmentActivity;
+import android.widget.Button;
+import android.widget.Toast;
 
 import com.baidu.mapapi.map.BaiduMap;
 import com.baidu.mapapi.map.BaiduMap.OnMarkerClickListener;
-import com.baidu.mapapi.map.InfoWindow.OnInfoWindowClickListener;
 import com.baidu.mapapi.map.InfoWindow;
+import com.baidu.mapapi.map.InfoWindow.OnInfoWindowClickListener;
 import com.baidu.mapapi.map.Marker;
 import com.baidu.mapapi.map.MarkerOptions;
 import com.baidu.mapapi.map.OverlayOptions;
@@ -16,23 +20,18 @@ import com.baidu.mapapi.search.route.OnGetRoutePlanResultListener;
 import com.baidu.mapapi.search.route.PlanNode;
 import com.baidu.mapapi.search.route.RoutePlanSearch;
 import com.baidu.mapapi.search.route.TransitRouteLine;
-import com.baidu.mapapi.search.route.TransitRoutePlanOption;
 import com.baidu.mapapi.search.route.TransitRouteLine.TransitStep;
+import com.baidu.mapapi.search.route.TransitRoutePlanOption;
 import com.baidu.mapapi.search.route.TransitRouteResult;
 import com.baidu.mapapi.search.route.WalkingRouteResult;
 import com.xiangxun.ework.staticarray.ImageForOverlay;
 
-import android.os.Bundle;
-import android.support.v4.app.FragmentActivity;
-import android.widget.Button;
-import android.widget.Toast;
-
 public class RouteMapDisplay extends FragmentActivity implements OnGetRoutePlanResultListener {
-	
+
 	private BaiduMap mBaiduMap;
 	private int clickMarkerNum = 1;
 	private RouteLine route = null;
-	private RoutePlanSearch mSearch = null; 
+	private RoutePlanSearch mSearch = null;
 	private int[] address ;
 	private InfoWindow mInfoWindow;
 
@@ -42,12 +41,12 @@ public class RouteMapDisplay extends FragmentActivity implements OnGetRoutePlanR
 		setContentView(R.layout.route_display_activity);
 		mBaiduMap = ((SupportMapFragment) (getSupportFragmentManager()
 				.findFragmentById(R.id.map))).getBaiduMap();
-		
+
 		mSearch = RoutePlanSearch.newInstance();
-        mSearch.setOnGetRoutePlanResultListener(this);
-        address = new int[2];
+		mSearch.setOnGetRoutePlanResultListener(this);
+		address = new int[2];
 		display();
-		//¸²¸ÇÎïµã»÷ÊÂ¼þ
+		//è¦†ç›–ç‰©ç‚¹å‡»äº‹ä»¶
 		mBaiduMap.setOnMarkerClickListener(new OnMarkerClickListener() {
 			public boolean onMarkerClick(final Marker marker) {
 				int j = 0;
@@ -76,30 +75,30 @@ public class RouteMapDisplay extends FragmentActivity implements OnGetRoutePlanR
 				}else if (clickMarkerNum == 2) {
 					showMarkerwindow(marker, j);
 				}
-				
+
 				return true;
 			}
 		});
-		
+
 	}
 	void display(){
 		for (int i = 0; i < RoutineDisplay.dataListFromSQLite.size(); i++) {
 			LatLng llArray = new LatLng((Double)RoutineDisplay.dataListFromSQLite.get(i).get("latitude"),
-									(Double)RoutineDisplay.dataListFromSQLite.get(i).get("longitude"));
+					(Double)RoutineDisplay.dataListFromSQLite.get(i).get("longitude"));
 			OverlayOptions ooBArray = new MarkerOptions()
 					.position(llArray).icon(ImageForOverlay.mOverlayImage[i])
 					.zIndex(5).draggable(true);
 			ImageForOverlay.overlayMarker[i] = (Marker) (mBaiduMap.addOverlay(ooBArray));
 		}
 	}
-	//µã»÷µØÍ¼ÉÏµÄmarkerÏÔÊ¾¶ÔÓ¦µÄÂ·³ÌÐÅÏ¢
+	//ç‚¹å‡»åœ°å›¾ä¸Šçš„markeræ˜¾ç¤ºå¯¹åº”çš„è·¯ç¨‹ä¿¡æ¯
 	/**
-	 * @param marker µØÍ¼¸²¸ÇÎï
-	 * @param i ¶ÔÓ¦µÄ¸²¸ÇÎïÐòºÅ
+	 * @param marker åœ°å›¾è¦†ç›–ç‰©
+	 * @param i å¯¹åº”çš„è¦†ç›–ç‰©åºå·
 	 */
 	String timeStr = null;
 	public int showMarkerWindowMsg(Marker marker, int i){
-		
+
 		String start = (String) RoutineDisplay.dataListFromSQLite.get(i).get("address");
 		String end = null;
 		if (i - 1 < 0) {
@@ -109,63 +108,63 @@ public class RouteMapDisplay extends FragmentActivity implements OnGetRoutePlanR
 			end = (String) RoutineDisplay.dataListFromSQLite.get(i-1).get("address");
 		}
 		timeStr = (String)RoutineDisplay.dataListFromSQLite.get(i).get("startTimeActual");
-		//ÖØÖÃä¯ÀÀ½ÚµãµÄÂ·ÏßÊý¾Ý
+		//é‡ç½®æµè§ˆèŠ‚ç‚¹çš„è·¯çº¿æ•°æ®
 		route = null;
-		//ÉèÖÃÆðÖÕµãÐÅÏ¢£¬¶ÔÓÚtranist search À´Ëµ£¬³ÇÊÐÃûÎÞÒâÒå
-		PlanNode stNode = PlanNode.withCityNameAndPlaceName("ÏÃÃÅ", start);
-		PlanNode enNode = PlanNode.withCityNameAndPlaceName("ÏÃÃÅ", end);
-		
-	    mSearch.transitSearch((new TransitRoutePlanOption())
-	            .from(enNode)
-	            .city("ÏÃÃÅ")
-	            .to(stNode));
-	    clickMarkerNum = 2;
-	    Toast.makeText(this, "ÔÙ´Îµã»÷»ñµÃÊý¾Ý", Toast.LENGTH_SHORT).show();
+		//è®¾ç½®èµ·ç»ˆç‚¹ä¿¡æ¯ï¼Œå¯¹äºŽtranist search æ¥è¯´ï¼ŒåŸŽå¸‚åæ— æ„ä¹‰
+		PlanNode stNode = PlanNode.withCityNameAndPlaceName("åŽ¦é—¨", start);
+		PlanNode enNode = PlanNode.withCityNameAndPlaceName("åŽ¦é—¨", end);
+
+		mSearch.transitSearch((new TransitRoutePlanOption())
+				.from(enNode)
+				.city("åŽ¦é—¨")
+				.to(stNode));
+		clickMarkerNum = 2;
+		Toast.makeText(this, "å†æ¬¡ç‚¹å‡»èŽ·å¾—æ•°æ®", Toast.LENGTH_SHORT).show();
 		return i;
 	}
-	
+
 	public void showMarkerwindow(Marker marker, int i){
 		/**test code for time and distance begin***/
-	    int allTime = 0;
-	    int distance = 0;
-	    int allTimeSum = 0;
-	    int distanceSum = 0;
-	    int[] mData = new int[2];
-	    if (route != null) {
-	    	for (int j = 0; j < route.getAllStep().size(); j++) {
-	        	TransitRouteLine.TransitStep allStep = (TransitStep) route.getAllStep().get(j);
-				allTime = allStep.getDuration();			
+		int allTime = 0;
+		int distance = 0;
+		int allTimeSum = 0;
+		int distanceSum = 0;
+		int[] mData = new int[2];
+		if (route != null) {
+			for (int j = 0; j < route.getAllStep().size(); j++) {
+				TransitRouteLine.TransitStep allStep = (TransitStep) route.getAllStep().get(j);
+				allTime = allStep.getDuration();
 				allTimeSum += allTime;
 				distance = allStep.getDistance();
 				distanceSum += distance;
 			}
-	        address[0] = allTimeSum;
-	        address[1] = distanceSum;
-	        mData = address;
+			address[0] = allTimeSum;
+			address[1] = distanceSum;
+			mData = address;
 		}
 //		    Toast.makeText(getApplicationContext(), String.valueOf(address[0]), Toast.LENGTH_SHORT).show();
-	    /**test code for time and distance end***/
-	    Button button = new Button(getApplicationContext());
+		/**test code for time and distance end***/
+		Button button = new Button(getApplicationContext());
 		final LatLng ll = marker.getPosition();
 		OnInfoWindowClickListener listener = null;
 		String TimeString = String.valueOf(mData[0]/60);
 		String distanceKm = String.valueOf(mData[1]/1000);
 		button.setTextColor(android.graphics.Color.BLACK);
-		button.setText("¹«½»ºÄÊ±£º" 
-				+ TimeString + "·ÖÖÓ"
-				+ "\n" 
-				+ "Í£ÁôÊ±¼ä£º" 
-				+ timeStr + "·ÖÖÓ"
+		button.setText("å…¬äº¤è€—æ—¶ï¼š"
+				+ TimeString + "åˆ†é’Ÿ"
 				+ "\n"
-				+ "Á½µØ¾àÀë£º"
-				+ distanceKm + "¹«Àï");
+				+ "åœç•™æ—¶é—´ï¼š"
+				+ timeStr + "åˆ†é’Ÿ"
+				+ "\n"
+				+ "ä¸¤åœ°è·ç¦»ï¼š"
+				+ distanceKm + "å…¬é‡Œ");
 		listener = new OnInfoWindowClickListener() {
 			public void onInfoWindowClick() {
-				
+
 				mBaiduMap.hideInfoWindow();
 			}
 		};
-		
+
 		mInfoWindow = new InfoWindow(button, ll, listener);
 		mBaiduMap.showInfoWindow(mInfoWindow);
 		clickMarkerNum = 1;
@@ -173,17 +172,17 @@ public class RouteMapDisplay extends FragmentActivity implements OnGetRoutePlanR
 	@Override
 	public void onGetDrivingRouteResult(DrivingRouteResult arg0) {
 		// TODO Auto-generated method stub
-		
+
 	}
 	@Override
 	public void onGetTransitRouteResult(TransitRouteResult arg0) {
 		// TODO Auto-generated method stub
-		
+
 	}
 	@Override
 	public void onGetWalkingRouteResult(WalkingRouteResult arg0) {
 		// TODO Auto-generated method stub
-		
+
 	}
-	
+
 }

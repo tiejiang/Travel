@@ -17,13 +17,13 @@ public class TravelRoutePlanning extends Activity implements OnClickListener {
 		super.onCreate(savedInstanceState);
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		setContentView(R.layout.travel_route_planning);
-		
+
 		xingcheng = (Button)findViewById(R.id.xingcheng);
 		xingcheng.setOnClickListener(this);
 	}
 	@Override
 	public void onClick(View v) {
-		// 点击“景点规划”后出现“二级菜单”的三个按钮
+		// 鐐瑰嚮鈥滄櫙鐐硅鍒掆�濆悗鍑虹幇鈥滀簩绾ц彍鍗曗�濈殑涓変釜鎸夐挳
 		Intent intent = new Intent();
 		intent.setClass(this, DrawerActivity.class);
 		startActivity(intent);
