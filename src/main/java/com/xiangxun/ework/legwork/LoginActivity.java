@@ -84,33 +84,33 @@ public class LoginActivity extends Activity implements OnClickListener {
 		// TODO Auto-generated method stub
 		switch (arg0.getId()) {
 			case R.id.loginButton:
-				if (isConnect) {
-					if (validate()) {
-						if (login()) {
-							Toast.makeText(LoginActivity.this, "登录失败！", SHOW_HINT_TIME).show();
-						}else {
-							saveUserMsg(username, pwd);
+//				if (isConnect) {
+//					if (validate()) {
+//						if (login()) {
+//							Toast.makeText(LoginActivity.this, "登录失败！", SHOW_HINT_TIME).show();
+//						}else {
+//							saveUserMsg(username, pwd);
 							//登陆条件符合 进入主界面
 							Intent intent = new Intent();
 							intent.setClass(LoginActivity.this, DrawerActivity.class);
 							startActivity(intent);
-						}
-					}
-				}else {
-					AlertDialog.Builder builder = new AlertDialog.Builder(this);
-					builder.setTitle("提醒")
-							.setMessage("请检查是否连接网络")
-							.setPositiveButton("确定", null);
-					builder.setCancelable(false);
-					builder.create()
-							.show();
-				}
+//						}
+//					}
+//				}else {
+//					AlertDialog.Builder builder = new AlertDialog.Builder(this);
+//					builder.setTitle("提醒")
+//							.setMessage("请检查是否连接网络")
+//							.setPositiveButton("确定", null);
+//					builder.setCancelable(false);
+//					builder.create()
+//							.show();
+//				}
 
 				break;
 
 			case R.id.cancelButton:
-				Intent intent = new Intent();
-				intent.setClass(LoginActivity.this, DrawerActivity.class);
+				Intent mIntent = new Intent();
+				mIntent.setClass(LoginActivity.this, DrawerActivity.class);
 				finish();
 				System.exit(0);
 				break;

@@ -1,11 +1,6 @@
 package com.xiangxun.ework.legwork.util;
 
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.HttpURLConnection;
-import java.net.URL;
-import java.util.List;
+import android.util.Log;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
@@ -13,9 +8,14 @@ import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.DefaultHttpClient;
-import org.apache.http.protocol.HTTP;
 import org.apache.http.util.EntityUtils;
-import android.util.Log;
+
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.util.List;
 
 public class util {
  /**
